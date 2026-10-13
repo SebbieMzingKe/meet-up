@@ -18,11 +18,12 @@ export default function EventsIndex({ events }: Props) {
 
             <div className="space-y-4">
                 {events.map((event) => (
-                    <div key={event.id}>
-                        <h2>{event.title}</h2>
-                        <p>{event.location}</p>
+                    <EventCard key={event.id} event={event}/>
+                    // <div key={event.id}>
+                    //     <h2>{event.title}</h2>
+                    //     <p>{event.location}</p>
 
-                    </div>
+                    // </div>
                 ))}
             </div>
         </>

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('meetup_group_id')->constrained()->cascadeOnDelete();
             $table->string('title');
             $table->string('slug')->unique();
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->string('location');
             $table->dateTime('starts_at');
             $table->timestamps();

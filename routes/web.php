@@ -7,9 +7,17 @@ Route::inertia('/', 'welcome')->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');
+
+    Route::get('events/create', [EventController::class, 'create'])->name('events.create');
+
+    Route::post('events', [EventController::class, 'store'])->name('events.store');
+
+    Route::get('events/{event}/edit', [EventController::class, 'edit'])->name('events.edit');
+
+    Route::patch('events/{event}', [EventController::class, 'update'])->name('events.update');
 });
 
-Route::get('/events', [EventController::class, 'index'])->name('events.index');
+Route::get('events', [EventController::class, 'index'])->name('events.index');
 
 Route::get('events/{event}', [EventController::class, 'show'])->name('events.show');
 

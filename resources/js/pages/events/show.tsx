@@ -1,5 +1,5 @@
-import { Head } from '@inertiajs/react';
-import { index, show } from '@/routes/events';
+import { Head, Link } from '@inertiajs/react';
+import { edit, index, show } from '@/routes/events';
 import type { Event } from '@/types';
 
 interface Props {
@@ -11,7 +11,8 @@ export default function EventShow({ event }: Props) {
         <>
             <Head title={event.title} />
 
-            <div className="rounded-xl border border-sidebar-border/70 p-6 dark:border-sidebar-border">
+            <Link href={edit.url(event)}>edit</Link>
+            <div className="mt-4 rounded-xl border border-sidebar-border/70 p-6 dark:border-sidebar-border">
                 <h1 className="text-2xl font-semibold">{event.title}</h1>
 
                 {event.meetup_group && (

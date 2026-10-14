@@ -5,9 +5,10 @@ import type { Event } from '@/types';
 
 interface Props {
     events: Event[];
+    canCreateEvent: boolean;
 }
 
-export default function EventsIndex({ events }: Props) {
+export default function EventsIndex({ events, canCreateEvent }: Props) {
     return (
         <>
             <Head title="Upcoming Events" />
@@ -15,7 +16,7 @@ export default function EventsIndex({ events }: Props) {
             <div className="flex items-center justify-between">
                 <h1 className="text-2xl font-semibold">Upcoming Events</h1>
 
-                <Link href={create.url()}>create event</Link>
+                { canCreateEvent && <Link href={create.url()}>create event</Link>}
             </div>
 
             <div className="space-y-4">

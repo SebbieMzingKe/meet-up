@@ -8,6 +8,7 @@ use App\Models\Event;
 use App\Models\MeetupGroup;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Support\Str;
@@ -22,24 +23,33 @@ class EventController extends Controller
         ->orderBy('starts_at')
         ->get();
 
+        $user = auth()->user();
+
         return Inertia::render('events/index', [
             'events' => $events,
+            'canCreateEvent' => $user ? $user->meetupGroups()->exists()
+            : false,
         ]);
     }
 
     public function show(Event $event): Response
     {
         $event->load('meetupGroup.user');
+
+        $user = auth()->user();
+
         return Inertia::render('events/show', [
             'event' => $event,
+            'canEdit' => $user?->can('update', $event) ?? false,
+            'isRsvped' => $user? $event->users()->where('user_id', $user->id)
+            ->exists() : false,
+            'attendedCount'=>$event->users()->count(),
         ]);
     }
 
     public function create(): Response
     {
-        $meetupGroups = MeetupGroup::query()
-        ->orderBy('name')
-        ->get(['id', 'name']);
+        $meetupGroups = auth()->user()->meetupGroups()->orderBy('name')->get(['id', 'name']);
 
         return Inertia::render('events/create', [
             'meetupGroups' => $meetupGroups
@@ -58,6 +68,8 @@ class EventController extends Controller
     }
 
     public function edit(Event $event): Response{
+
+    Gate::authorize('update', $event);
         return Inertia::render('events/edit', [
             'event' => $event,
         ]);
